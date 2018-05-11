@@ -14,6 +14,6 @@ var birds = [{
 ];
 
 birds.sort(function(a, b) {
-	return a.age - b.age 
+	return a.age - b.age; 
 });
 console.log(birds);
