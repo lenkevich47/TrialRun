@@ -1,7 +1,8 @@
 var person = {
  name: 'Olya',
  surname: 'Lenkevich',
- age: 23};
+ age: 23
+};
 
 var finalObject = {};
 
