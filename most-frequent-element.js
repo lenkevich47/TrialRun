@@ -1,6 +1,6 @@
 var elements = ['cube', 'ball', 'triangle', 10, 10, 'triangle', 7, 'cube', 10];
 var maxRepeats = 0;
-var mostFrequentElement = null;
+var mostFrequentElement;
 
 for (var i = 0; i < elements.length; i++) {
 	var iteratedElement = elements[i];
