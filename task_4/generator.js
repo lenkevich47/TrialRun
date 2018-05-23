@@ -30,7 +30,7 @@ var employees = [{
 	skill: 'Automation'
 }];
 
-var chosenSkill = '';
+var chosenSkill = 'None';
 
 
 function changeSkill(skill) {
@@ -59,28 +59,51 @@ function changeSkill(skill) {
 function generateTable() {
 	var employeeTable = document.getElementById("generated-table");
 	var employeesCheckboxes = document.getElementById("employees-checkboxes");
+	var errorDiv = document.getElementById("error");
 	var chosenCheckboxes = []
 	var checkboxes = employeesCheckboxes.querySelectorAll("input[type=checkbox]:checked");
+	var validationError;
 
 	while (employeeTable.hasChildNodes()) {
         employeeTable.removeChild(employeeTable.lastChild);
     }
+    while (errorDiv.hasChildNodes()) {
+        errorDiv.removeChild(errorDiv.lastChild);
+    }
 
+    // сохраняем id выбранных пользователей в chosenCheckboxes
 	for (var i = 0; i < checkboxes.length; i++) {
   		chosenCheckboxes.push(checkboxes[i].value)
 	}
+
+	if (chosenSkill === "None") {
+		errorDiv.appendChild(document.createTextNode('Please, select a team.'))
+
+		return;
+	}
 	
 	var table = document.createElement('table');
+
+	// создаём хедер таблицы
 	var skillRow = table.insertRow();
 	var skillTd = skillRow.insertCell();
 	skillTd.colSpan = 2;
 	skillTd.appendChild(document.createTextNode(chosenSkill));
 
+	// заполняем таблицу
 	for (var i = 0; i < chosenCheckboxes.length; i++) {
 		var employee = employees.find(function( obj ) {
   			return obj.id == chosenCheckboxes[i];
 		});
-		console.log(employee);
+
+		if (!employee) {
+			validationError = 'No data found';
+		}
+
+		if (employee.skill !== chosenSkill) {
+			validationError = "Specified team member doesn't exist in the selected team.";
+		}
+
 		var row = table.insertRow();
 		var tdMember = row.insertCell();
         tdMember.appendChild(document.createTextNode(employee.name + ' ' + employee.surname));
@@ -88,11 +111,17 @@ function generateTable() {
 
         if (employee.surname.indexOf('a') > -1) {
         	tdStatus.appendChild(document.createTextNode('Available'));
+        	tdStatus.className = 'available';
         } else {
         	tdStatus.appendChild(document.createTextNode('Not Available'));
+        	tdStatus.className = 'not-available';
         }
         
-      ;
+   	}
+
+   	if (validationError) {
+		errorDiv.appendChild(document.createTextNode(validationError))
+   	} else {
+		employeeTable.appendChild(table);
 	}
-	employeeTable.appendChild(table);
 }

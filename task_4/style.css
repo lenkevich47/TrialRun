@@ -1,12 +1,30 @@
+body {
+	font-family: Arial;
+	font-size: 20px;
+}
+
 button {
 	background: #deeff5;
 	font-weight: bold;
 }
 
 table, th, td {
-       border: 1px solid black;
-       border-collapse: collapse;
-       }
+    border: 1px solid black;
+    border-collapse: collapse;
+}
 
+.available {
+	font-weight: bold;
+	color: green;
+}
 
+.not-available {
+	font-weight: bold;
+	color: red;
+}
 
+#error {
+	color: red;
+	text-align: center;
+	font-weight: bold;
+}
