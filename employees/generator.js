@@ -2,42 +2,42 @@ var chosenSkill = 'None';
 
 
 function changeSkill(skill) {
-	chosenSkill = skill;
-	var employeesCheckboxes = document.getElementById("employees-checkboxes");
+    chosenSkill = skill;
+    var employeesCheckboxes = document.getElementById("employees-checkboxes");
 
-	while (employeesCheckboxes.hasChildNodes()) {
+    while (employeesCheckboxes.hasChildNodes()) {
         employeesCheckboxes.removeChild(employeesCheckboxes.lastChild);
     }
 
     $.ajax({
-	    url: "http://localhost:3000/employees?skill=" + skill,
-	    success: function(employees) {
-	      	for (var i = 0; i < employees.length; i++) {
-				if (skill === employees[i].skill) {
-					var input = document.createElement("input");
-		            input.type = "checkbox";
-		            input.name = employees[i].name + ' ' + employees[i].surname;
-		            input.value = employees[i].id;
+        url: "http://localhost:3000/employees?skill=" + skill,
+        success: function(employees) {
+            for (var i = 0; i < employees.length; i++) {
+                if (skill === employees[i].skill) {
+                    var input = document.createElement("input");
+                    input.type = "checkbox";
+                    input.name = employees[i].name + ' ' + employees[i].surname;
+                    input.value = employees[i].id;
 
-		            employeesCheckboxes.appendChild(input);
-		            employeesCheckboxes.appendChild(document.createTextNode(employees[i].name + ' ' + employees[i].surname));
-				
-					employeesCheckboxes.appendChild(document.createElement("br"));
-				}
-			}
-	    }
-	});
+                    employeesCheckboxes.appendChild(input);
+                    employeesCheckboxes.appendChild(document.createTextNode(employees[i].name + ' ' + employees[i].surname));
+
+                    employeesCheckboxes.appendChild(document.createElement("br"));
+                }
+            }
+        }
+    });
 }
 
 function generateTable() {
-	var employeeTable = document.getElementById("generated-table");
-	var employeesCheckboxes = document.getElementById("employees-checkboxes");
-	var errorDiv = document.getElementById("error");
-	var chosenCheckboxes = []
-	var checkboxes = employeesCheckboxes.querySelectorAll("input[type=checkbox]:checked");
-	var validationError;
+    var employeeTable = document.getElementById("generated-table");
+    var employeesCheckboxes = document.getElementById("employees-checkboxes");
+    var errorDiv = document.getElementById("error");
+    var chosenCheckboxes = []
+    var checkboxes = employeesCheckboxes.querySelectorAll("input[type=checkbox]:checked");
+    var validationError;
 
-	while (employeeTable.hasChildNodes()) {
+    while (employeeTable.hasChildNodes()) {
         employeeTable.removeChild(employeeTable.lastChild);
     }
     while (errorDiv.hasChildNodes()) {
@@ -45,62 +45,62 @@ function generateTable() {
     }
 
     // сохраняем id выбранных пользователей в chosenCheckboxes
-	for (var i = 0; i < checkboxes.length; i++) {
-  		chosenCheckboxes.push(checkboxes[i].value)
-	}
+    for (var i = 0; i < checkboxes.length; i++) {
+        chosenCheckboxes.push(checkboxes[i].value)
+    }
 
-	if (chosenSkill === "None") {
-		errorDiv.appendChild(document.createTextNode('Please, select a team.'))
+    if (chosenSkill === "None") {
+        errorDiv.appendChild(document.createTextNode('Please, select a team.'))
 
-		return;
-	}
-	
-	if (chosenCheckboxes.length === 0) {
-		errorDiv.appendChild(document.createTextNode('Please, select a member.'))
+        return;
+    }
 
-		return;
-	}
-	
-	var table = document.createElement('table');
+    if (chosenCheckboxes.length === 0) {
+        errorDiv.appendChild(document.createTextNode('Please, select a member.'))
 
-	// создаём хедер таблицы
-	var skillRow = table.insertRow();
-	var skillTd = skillRow.insertCell();
-	skillTd.colSpan = 2;
-	skillTd.appendChild(document.createTextNode(chosenSkill));
+        return;
+    }
 
-	$.ajax({
-		type: "POST",
-  		data: {
-  			employees: chosenCheckboxes,
-  			skill: chosenSkill
-  		},
-	    url: "http://localhost:3000/employeesWithStatus",
-	    success: function(response) {
-	    	if (response.hasOwnProperty('error')) {
-				errorDiv.appendChild(document.createTextNode(response.error));
-				return; 		
-	    	} 
+    var table = document.createElement('table');
 
-			// заполняем таблицу
-			for (var i = 0; i < response.length; i++) {
-				var employee = response[i];
+    // создаём хедер таблицы
+    var skillRow = table.insertRow();
+    var skillTd = skillRow.insertCell();
+    skillTd.colSpan = 2;
+    skillTd.appendChild(document.createTextNode(chosenSkill));
 
-				var row = table.insertRow();
-				var tdMember = row.insertCell();
-		        tdMember.appendChild(document.createTextNode(employee.name + ' ' + employee.surname));
-		        var tdStatus = row.insertCell();
+    $.ajax({
+        type: "POST",
+        data: {
+            employees: chosenCheckboxes,
+            skill: chosenSkill
+        },
+        url: "http://localhost:3000/employeesWithStatus",
+        success: function(response) {
+            if (response.hasOwnProperty('error')) {
+                errorDiv.appendChild(document.createTextNode(response.error));
+                return;
+            }
 
-		        if (employee.status === 'available') {
-		        	tdStatus.appendChild(document.createTextNode('Available'));
-		        	tdStatus.className = 'available';
-		        } else {
-		        	tdStatus.appendChild(document.createTextNode('Not Available'));
-		        	tdStatus.className = 'not-available';
-		        }  
-		   	}
+            // заполняем таблицу
+            for (var i = 0; i < response.length; i++) {
+                var employee = response[i];
 
-			employeeTable.appendChild(table);
-	    }
-	});
+                var row = table.insertRow();
+                var tdMember = row.insertCell();
+                tdMember.appendChild(document.createTextNode(employee.name + ' ' + employee.surname));
+                var tdStatus = row.insertCell();
+
+                if (employee.status === 'available') {
+                    tdStatus.appendChild(document.createTextNode('Available'));
+                    tdStatus.className = 'available';
+                } else {
+                    tdStatus.appendChild(document.createTextNode('Not Available'));
+                    tdStatus.className = 'not-available';
+                }
+            }
+
+            employeeTable.appendChild(table);
+        }
+    });
 }
