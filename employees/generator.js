@@ -45,6 +45,10 @@ function generateTable() {
     }
 
     // сохраняем id выбранных пользователей в chosenCheckboxes
+    chosenCheckboxes = checkboxes.map(function(checkbox) {
+        return checkboxes.value;
+    });
+    
     for (var i = 0; i < checkboxes.length; i++) {
         chosenCheckboxes.push(checkboxes[i].value)
     }
