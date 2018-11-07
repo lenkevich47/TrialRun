@@ -44,12 +44,13 @@ function changeSkill(skill) {
     for (var i = 0; i < employees.length; i++) {
         if (skill === employees[i].skill) {
             var input = document.createElement("input");
+            var name = employees[i].name + ' ' + employees[i].surname;
             input.type = "checkbox";
-            input.name = employees[i].name + ' ' + employees[i].surname;
+            input.name = name;
             input.value = employees[i].id;
 
             employeesCheckboxes.appendChild(input);
-            employeesCheckboxes.appendChild(document.createTextNode(employees[i].name + ' ' + employees[i].surname));
+            employeesCheckboxes.appendChild(document.createTextNode(name));
 
             employeesCheckboxes.appendChild(document.createElement("br"));
         }
@@ -61,7 +62,7 @@ function generateTable() {
     var employeesCheckboxes = document.getElementById("employees-checkboxes");
     var errorDiv = document.getElementById("error");
     var chosenCheckboxes = []
-    var checkboxes = employeesCheckboxes.querySelectorAll("input[type=checkbox]:checked");
+    var checkedCheckboxes = employeesCheckboxes.querySelectorAll("input[type=checkbox]:checked");
     var validationError;
 
     while (employeeTable.hasChildNodes()) {
@@ -72,8 +73,8 @@ function generateTable() {
     }
 
     // сохраняем id выбранных пользователей в chosenCheckboxes
-    for (var i = 0; i < checkboxes.length; i++) {
-        chosenCheckboxes.push(checkboxes[i].value)
+    for (var i = 0; i < checkedCheckboxes.length; i++) {
+        chosenCheckboxes.push(checkedCheckboxes[i].value)
     }
 
     if (chosenSkill === "None") {
@@ -93,7 +94,7 @@ function generateTable() {
     // заполняем таблицу
     for (var i = 0; i < chosenCheckboxes.length; i++) {
         var employee = employees.find(function(obj) {
-            return obj.id == chosenCheckboxes[i];
+            return obj.id === chosenCheckboxes[i];
         });
 
         if (!employee) {

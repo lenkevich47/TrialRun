@@ -1,11 +1,11 @@
 body {
-	font-family: Arial;
-	font-size: 20px;
+    font-family: Arial;
+    font-size: 20px;
 }
 
 button {
-	background: #deeff5;
-	font-weight: bold;
+    background: #deeff5;
+    font-weight: bold;
 }
 
 table, th, td {
@@ -14,17 +14,17 @@ table, th, td {
 }
 
 .available {
-	font-weight: bold;
-	color: green;
+    font-weight: bold;
+    color: green;
 }
 
 .not-available {
-	font-weight: bold;
-	color: red;
+    font-weight: bold;
+    color: red;
 }
 
 #error {
-	color: red;
-	text-align: center;
-	font-weight: bold;
+    color: red;
+    text-align: center;
+    font-weight: bold;
 }
