@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <title>Generator</title>
+      <link href='style.css' rel='stylesheet' type='text/css'>
+      <script src='generator.js'></script>
+   </head>
+   <body>
+      <h1>Employee skills report generator</h1>
+      <div>Skills  
+         <form>
+            <div><input type="radio" name="Skill" value="None" onclick="changeSkill('None')" checked> None</div>
+            <div><input type="radio" name="Skill" value="QA" onclick="changeSkill('QA')"> QA</div>
+            <div><input type="radio" name="Skill" value="Automation" onclick="changeSkill('Automation')"> Automation</div>
+            <div><input type="radio" name="Skill" value="Dev" onclick="changeSkill('Dev')"> Dev</div>
+         </form>
+      </div>
+
+
+      <br>
+      <div>Members
+         <div id="employees-checkboxes"></div>         
+      </div>
+
+      <br>
+      <div>
+         <div><button type="button" onclick="generateTable()">Generate Report</button></div>
+      </div>
+      <br>
+      <div id="generated-table"></div>
+      <div id="error"></div>
+
+   </body>
